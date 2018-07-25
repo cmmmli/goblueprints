@@ -16,7 +16,8 @@ import (
 	"github.com/stretchr/objx"
 )
 
-func Env_load() {
+// EnvLoad load envValue from .env
+func EnvLoad() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -46,19 +47,19 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	Env_load()
-	github_client_id := os.Getenv("GITHUB_CLIENT_ID")
-	github_client_secret := os.Getenv("GITHUB_CLIENT_SECRET")
-	google_client_id := os.Getenv("GOOGLE_CLIENT_ID")
-	google_client_secret := os.Getenv("GOOGLE_CLIENT_SECRET")
+	EnvLoad()
+	githubClientID := os.Getenv("GITHUB_CLIENT_ID")
+	githubClientSecret := os.Getenv("GITHUB_CLIENT_SECRET")
+	googleClientID := os.Getenv("GOOGLE_CLIENT_ID")
+	googleClientSecret := os.Getenv("GOOGLE_CLIENT_SECRET")
 
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
 	flag.Parse() // フラグを解釈します
 	//Gomniauthのセットアップ
 	gomniauth.SetSecurityKey("f2d75cfe7fb511d448d8e34703b2cee4") // 自分で決めたランダムな値
 	gomniauth.WithProviders(
-		github.New(github_client_id, github_client_secret, "http://localhost:8080/auth/callback/github"),
-		google.New(google_client_id, google_client_secret, "http://localhost:8080/auth/callback/google"),
+		github.New(githubClientID, githubClientSecret, "http://localhost:8080/auth/callback/github"),
+		google.New(googleClientID, googleClientSecret, "http://localhost:8080/auth/callback/google"),
 	)
 	r := newRoom(UseGravatar)
 	// r.tracer = trace.New(os.Stdout)
