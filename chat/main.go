@@ -16,6 +16,9 @@ import (
 	"github.com/stretchr/objx"
 )
 
+// 現在アクティブなAvatarの実装
+var avatars Avatar = UseFileSystemAvatar
+
 // EnvLoad load envValue from .env
 func EnvLoad() {
 	err := godotenv.Load()
@@ -61,7 +64,7 @@ func main() {
 		github.New(githubClientID, githubClientSecret, "http://localhost:8080/auth/callback/github"),
 		google.New(googleClientID, googleClientSecret, "http://localhost:8080/auth/callback/google"),
 	)
-	r := newRoom(UseFileSystemAvatar)
+	r := newRoom()
 	// r.tracer = trace.New(os.Stdout)
 	http.Handle("/chat", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
