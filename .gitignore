@@ -1,2 +1,7 @@
 .env
 avatars/
+
+/chat/chat
+/sprinkle/sprinkle
+/domainify/domainify
+/coolify/coolify
